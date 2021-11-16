@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.Enemy.*;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
 import uet.oop.bomberman.entities.buffItems.IncreaseBombs;
 import uet.oop.bomberman.entities.staticEntities.Grass;
@@ -50,6 +51,17 @@ public class BombermanGame extends Application {
         entities.add(new IncreaseBombs(4, 5, Sprite.powerup_bombs.getFxImage()));
         /** end test */
 
+        //tao enemy luu y toc do tung con
+        Balloom balloom = new Balloom(10, 10, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
+        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0, bomberman);
+        Doll doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
+        Kondoria kondoria = new Kondoria(4, 4, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
+        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 2.0, bomberman);
+        entities.add(minvo);
+        entities.add(kondoria);
+        entities.add(oneal);
+        entities.add(balloom);
+        entities.add(doll);
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
