@@ -122,7 +122,11 @@ public class BombermanGame extends Application {
                 if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
                 }
-                else {
+                else if (2 <= i && i < WIDTH - 2 &&
+                        2 <= j && j < HEIGHT &&
+                        i % 2 == 0 && j % 2 == 0) {
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                } else {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
