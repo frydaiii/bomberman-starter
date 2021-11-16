@@ -170,4 +170,13 @@ public class Bomber extends AnimatedEntity {
                 break;
         }
     }
+
+    // Constructor
+    public int getXPlayer() {
+        return this.x;
+    }
+
+    public int getYPlayer() {
+        return this.y;
+    }
 }
