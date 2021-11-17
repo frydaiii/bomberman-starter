@@ -45,6 +45,9 @@ public class Bomber extends AnimatedEntity {
     }
 
     private void moveTo(int x, int y) {
+        if (!alive) {
+            return;
+        }
         for (Entity entity: BombermanGame.stillObjects) {
             String className = entity.getClass().getTypeName();
             if (className.contains("Grass")) {
@@ -82,7 +85,8 @@ public class Bomber extends AnimatedEntity {
 //                !entity.isVisible()) {
 //                continue;
 //            }
-            if (className.contains("flames") && entity.existOnSquare(x, y)) {
+            if (className.contains("flames") && entity.existOnSquare(x, y) &&
+                entity.isVisible()) {
                 setAlive(false);
             }
             if (entity.existOnSquare(x, y)) {
