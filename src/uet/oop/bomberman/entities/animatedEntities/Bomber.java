@@ -5,6 +5,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 
 public class Bomber extends AnimatedEntity {
@@ -50,6 +51,20 @@ public class Bomber extends AnimatedEntity {
                 continue;
             } else {
                 if (entity.existOnSquare(x, y)) {
+                    int diffX = this.x % Sprite.SCALED_SIZE;
+                    int diffY = this.y % Sprite.SCALED_SIZE;
+                    if (diffX < 5 && diffY == 0) {
+                        this.x -= diffX;
+                    }
+                    if (diffY < 5 && diffX == 0) {
+                        this.y -= diffY;
+                    }
+                    if (diffX > 25 && diffY == 0) {
+                        this.x += Sprite.SCALED_SIZE - diffX;
+                    }
+                    if (diffY > 25 && diffX == 0) {
+                        this.y += Sprite.SCALED_SIZE - diffY;
+                    }
                     return;
                 }
             }
@@ -57,11 +72,16 @@ public class Bomber extends AnimatedEntity {
 
         for (Entity entity: BombermanGame.entities) {
             String className = entity.getClass().getTypeName();
-            if (className.contains("Bomber") ||
-                className.contains("Bomb") ||
-                !entity.isVisible()) {
-                continue;
-            }
+//            if (className.contains("Bomber") ||
+//                className.contains("Bomb") ||
+//                !entity.isVisible()) {
+//                continue;
+//            }
+//            if (!className.contains("flames") ||
+////                !className.contains("buffItems") ||
+//                !entity.isVisible()) {
+//                continue;
+//            }
             if (className.contains("flames") && entity.existOnSquare(x, y)) {
                 setAlive(false);
             }
@@ -73,7 +93,7 @@ public class Bomber extends AnimatedEntity {
                         entity.setVisible(false);
                     }
                 }
-                return;
+//                return;
             }
         }
         this.x = x;
