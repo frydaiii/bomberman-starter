@@ -17,6 +17,10 @@ public class ExplosionController {
     public void begin() {
         Explosion center = new Explosion(xUnit, yUnit);
         BombermanGame.updateQueue.add(center);
+        boolean breakUp = false;
+        boolean breakDown = false;
+        boolean breakLeft = false;
+        boolean breakRight = false;
         for (int i = 0; i < maxRange; i++) {
             int range = i + 1;
             Explosion up, down, left, right;
@@ -32,17 +36,25 @@ public class ExplosionController {
                 left = new Horizontal(xUnit - range, yUnit);
                 right = new Horizontal(xUnit + range, yUnit);
             }
-            if (up.canExplode()) {
+            if (up.canExplode() && !breakUp) {
                 BombermanGame.updateQueue.add(up);
+            } else {
+                breakUp = true;
             }
-            if (down.canExplode()) {
+            if (down.canExplode() && !breakDown) {
                 BombermanGame.updateQueue.add(down);
+            } else {
+                breakDown = true;
             }
-            if (left.canExplode()) {
+            if (left.canExplode() && !breakLeft) {
                 BombermanGame.updateQueue.add(left);
+            } else {
+                breakLeft = true;
             }
-            if (right.canExplode()) {
+            if (right.canExplode() && !breakRight) {
                 BombermanGame.updateQueue.add(right);
+            } else {
+                breakRight = true;
             }
         }
     }
