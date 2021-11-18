@@ -20,7 +20,7 @@ public abstract class Enemy extends AnimatedEntity {
     protected int direction = -1;
 
     // Kiểm tra dead or alive
-    protected boolean isDead = false;
+    protected boolean alive = true;
     protected long dyingAnimatedTime = 1_000_000_000l;
 
     public Enemy(int x, int y, Image img, double speed) {
@@ -70,8 +70,19 @@ public abstract class Enemy extends AnimatedEntity {
     public boolean canMove(int x, int y) {
         for (Entity entity: BombermanGame.stillObjects) {
             String className = entity.getClass().getTypeName();
-            if (entity.existOnSquare(x, y) && !className.equals("uet.oop.bomberman.entities.staticEntities.Grass")) {
+            if (entity.existOnSquare(x, y) && !className.contains("Grass")) {
                 return false;
+            }
+
+            if (className.contains("Bomb")) {
+                return false;
+            }
+        }
+
+        for (Entity entity: BombermanGame.entities) {
+            String className = entity.getClass().getTypeName();
+            if (className.contains("flames") && entity.existOnSquare(x, y) && entity.isVisible()) {
+                setAlive(false);
             }
         }
 
@@ -79,12 +90,15 @@ public abstract class Enemy extends AnimatedEntity {
     }
 
     public void update() {
-        if (!isDead) {
+        if (alive) {
+            animate();
             calculateMove();
-            chooseSprite();
         } else {
             afterDie();
         }
+
+        chooseSprite();
+
 
     }
 
@@ -97,5 +111,9 @@ public abstract class Enemy extends AnimatedEntity {
 
     public int getYEnemy() {
         return this.y;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }
