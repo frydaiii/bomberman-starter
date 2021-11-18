@@ -6,7 +6,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Enemy.*;
@@ -22,6 +24,7 @@ import java.util.List;
 public class BombermanGame extends Application {
     
     public static final int WINDOW_WIDTH = 20;
+    public static final int WINDOW_HEIGHT = 16;
     public static final int WIDTH = 30;
     public static final int HEIGHT = 15;
     public static final long TIME_UNIT = 10_000_000; // 10 ms
@@ -30,8 +33,14 @@ public class BombermanGame extends Application {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> updateQueue = new ArrayList<>();
+    private static int score;
     private GraphicsContext gc;
     private Canvas canvas;
+    private TextField scoreBoard;
+
+    public static void increaseScore(int point) {
+        score += point;
+    }
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -41,7 +50,18 @@ public class BombermanGame extends Application {
     public void start(Stage stage) {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        canvas.setLayoutY((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
         gc = canvas.getGraphicsContext2D();
+
+        // score board
+        score = 0;
+        scoreBoard = new TextField();
+        scoreBoard.setEditable(false);
+        scoreBoard.setFocusTraversable(false);
+        scoreBoard.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE);
+        scoreBoard.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
+        scoreBoard.setFont(Font.font(18));
+        scoreBoard.setStyle("-fx-background-color: #a9a8a8; -fx-text-fill: black;");
 
         // Tao bomberman
         Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
@@ -62,9 +82,17 @@ public class BombermanGame extends Application {
         entities.add(oneal);
         entities.add(balloom);
         entities.add(doll);
+
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
+        root.getChildren().add(scoreBoard);
+//        Button helo = new Button("helo");
+//        helo.setFocusTraversable(false);
+//        helo.setOnAction(event -> {
+//            System.out.println("clicky");
+//        });
+//        root.getChildren().add(helo);
 
         // Tao scene
         Scene scene = new Scene(root,
@@ -112,9 +140,11 @@ public class BombermanGame extends Application {
                     update();
                     render();
 
-                    if (bomberman.getX() > (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 &&
-                    bomberman.getX() < (WIDTH - WINDOW_WIDTH / 2) * Sprite.SCALED_SIZE) {
-                        root.setLayoutX((WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX());
+                    if (bomberman.getX() >= (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 &&
+                    bomberman.getX() <= (WIDTH - WINDOW_WIDTH / 2) * Sprite.SCALED_SIZE) {
+                        double distance = (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX();
+                        root.setLayoutX(distance);
+                        scoreBoard.setLayoutX(-distance);
                     }
 
                 }
@@ -147,6 +177,9 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        // update scoreBoard
+        scoreBoard.setText("Score: " + score);
+
         // add waiting entities to this.entities
         updateQueue.forEach(entity -> entities.add(entity));
         updateQueue.clear();
