@@ -93,13 +93,10 @@ public abstract class Enemy extends AnimatedEntity {
         if (alive) {
             animate();
             calculateMove();
+            chooseSprite();
         } else {
             afterDie();
         }
-
-        chooseSprite();
-
-
     }
 
     public abstract void chooseSprite();
