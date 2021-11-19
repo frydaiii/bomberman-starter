@@ -9,7 +9,7 @@ public class Kondoria extends Enemy {
     public Kondoria(int x, int y, Image img, double speed, Bomber bomber) {
         super(x, y, img, speed);
         super.fp = new findPathAdvanced(bomber, this);
-        this.MAX_STEPS = Sprite.DEFAULT_SIZE * 4;
+        this.MAX_STEPS = Sprite.DEFAULT_SIZE * 5;
     }
 
     @Override
