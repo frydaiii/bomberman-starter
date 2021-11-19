@@ -9,7 +9,7 @@ public class Minvo extends Enemy {
     public Minvo(int x, int y, Image img, double speed, Bomber bomber) {
         super(x, y, img, speed);
         super.fp = new findPathAdvanced(bomber, this);
-        this.MAX_STEPS = Sprite.DEFAULT_SIZE * 2;
+        this.MAX_STEPS = Sprite.DEFAULT_SIZE * 3;
     }
 
     @Override

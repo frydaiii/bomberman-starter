@@ -26,6 +26,7 @@ public class BombermanGame extends Application {
     public static final int HEIGHT = 15;
     public static final long TIME_UNIT = 10_000_000; // 10 ms
     public static final int MOVING_UNIT = 2;
+    public static double PLAYERSPEED = 1.0;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
@@ -53,10 +54,10 @@ public class BombermanGame extends Application {
 
         //tao enemy luu y toc do tung con
         Balloom balloom = new Balloom(13, 13, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
-        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
+        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), PLAYERSPEED, bomberman);
         Doll doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
-        Kondoria kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
-        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
+        Kondoria kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), PLAYERSPEED/4, bomberman);
+        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), PLAYERSPEED * 2, bomberman);
         entities.add(minvo);
         entities.add(kondoria);
         entities.add(oneal);

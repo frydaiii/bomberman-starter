@@ -18,16 +18,18 @@ public abstract class Enemy extends AnimatedEntity {
     protected final double rest;
     protected double steps;
     protected int direction = -1;
+    protected boolean moving = true;
 
     // Kiểm tra dead or alive
     protected boolean alive = true;
     protected long dyingAnimatedTime = 1_000_000_000l;
 
+
     public Enemy(int x, int y, Image img, double speed) {
         super(x, y, img);
         this.speed = speed;
 
-        MAX_STEPS = Sprite.DEFAULT_SIZE * 5 / speed;
+        MAX_STEPS = Sprite.DEFAULT_SIZE / speed;
         rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
         steps = MAX_STEPS;
     }
@@ -38,7 +40,6 @@ public abstract class Enemy extends AnimatedEntity {
             direction = fp.calculateDirection();
             steps = MAX_STEPS;
         }
-
 
         /*
         1: move right
@@ -54,15 +55,18 @@ public abstract class Enemy extends AnimatedEntity {
         if(canMove(x + xa, y) && canMove(x, y + ya)) {
             steps -= 1 + rest;
             move(xa * speed, ya * speed);
-            //_moving = true;
+            moving = true;
         } else {
             steps = 0;
-            //_moving = false;
+            moving = false;
         }
     }
 
 
     public void move(double xa, double ya) {
+        if (!alive) {
+            return;
+        }
         y += ya;
         x += xa;
     }
@@ -73,14 +77,13 @@ public abstract class Enemy extends AnimatedEntity {
             if (entity.existOnSquare(x, y) && !className.contains("Grass")) {
                 return false;
             }
-
-            if (className.contains("Bomb")) {
-                return false;
-            }
         }
 
         for (Entity entity: BombermanGame.entities) {
             String className = entity.getClass().getTypeName();
+            if (className.contains("Bomb") && entity.existOnSquare(x, y) && entity.isVisible()) {
+                return false;
+            }
             if (className.contains("flames") && entity.existOnSquare(x, y) && entity.isVisible()) {
                 setAlive(false);
             }
@@ -93,11 +96,10 @@ public abstract class Enemy extends AnimatedEntity {
         if (alive) {
             animate();
             calculateMove();
+            chooseSprite();
         } else {
             afterDie();
         }
-
-        chooseSprite();
 
 
     }
@@ -105,13 +107,6 @@ public abstract class Enemy extends AnimatedEntity {
     public abstract void chooseSprite();
     public abstract void afterDie();
 
-    public int getXEnemy() {
-        return this.x;
-    }
-
-    public int getYEnemy() {
-        return this.y;
-    }
 
     public void setAlive(boolean alive) {
         this.alive = alive;
