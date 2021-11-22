@@ -6,7 +6,6 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 
 public class Bomber extends AnimatedEntity {
@@ -122,9 +121,9 @@ public class Bomber extends AnimatedEntity {
 
             if (entity.existOnSquare(x, y)) {
                 if (className.contains("buffItems")) {
-                    if (className.contains("IncreaseBombs")) {
-                        maxBombs = 2;
-                        bombsBuff = 0; // active buff
+                    if (className.contains("Bomb") && entity.isVisible()) {
+                        maxBombs++;
+//                        bombsBuff = 0; // active buff
                         entity.setVisible(false);
                     }
                 }
@@ -195,7 +194,7 @@ public class Bomber extends AnimatedEntity {
 
     @Override
     public void update() {
-        updateBuff();
+//        updateBuff();
 
         if (alive) {
             animate();

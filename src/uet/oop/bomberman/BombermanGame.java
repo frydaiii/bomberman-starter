@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Enemy.*;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
-import uet.oop.bomberman.entities.buffItems.IncreaseBombs;
+import uet.oop.bomberman.entities.buffItems.Bomb;
 import uet.oop.bomberman.entities.staticEntities.Grass;
 import uet.oop.bomberman.entities.staticEntities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -123,6 +123,7 @@ public class BombermanGame extends Application {
                         double distance = (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX();
                         root.setLayoutX(distance);
                         scoreBoard.setLayoutX(-distance);
+                        pauseButton.setLayoutX(-distance + (WINDOW_WIDTH * Sprite.SCALED_SIZE - 70));
                     }
 
                 }
@@ -156,7 +157,7 @@ public class BombermanGame extends Application {
     private void createCharacters() {
 
         /** testing */
-        entities.add(new IncreaseBombs(4, 5, Sprite.powerup_bombs.getFxImage()));
+        entities.add(new Bomb(4, 5, Sprite.powerup_bombs.getFxImage()));
         /** end test */
 
         // Tao bomberman
