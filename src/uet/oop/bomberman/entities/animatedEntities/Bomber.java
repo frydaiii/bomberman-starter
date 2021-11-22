@@ -17,6 +17,7 @@ public class Bomber extends AnimatedEntity {
 
     private int maxBombs;
     private int maxExplodeRange;
+    private int speed = BombermanGame.MOVING_UNIT;
     private String direction;
     private ArrayList<Bomb> plannedBomb;
 
@@ -125,12 +126,14 @@ public class Bomber extends AnimatedEntity {
                 if (className.contains("buffItems")) {
                     if (className.contains("Bomb") && entity.isVisible()) {
                         maxBombs++;
-//                        bombsBuff = 0; // active buff
                         entity.setVisible(false);
                     }
                     if (className.contains("Flame") && entity.isVisible()) {
                         maxExplodeRange++;
-//                        bombsBuff = 0; // active buff
+                        entity.setVisible(false);
+                    }
+                    if (className.contains("Speed") && entity.isVisible()) {
+                        speed++;
                         entity.setVisible(false);
                     }
                 }
@@ -142,7 +145,7 @@ public class Bomber extends AnimatedEntity {
     }
 
     public void moveRight() {
-        moveTo(x + BombermanGame.MOVING_UNIT, y);
+        moveTo(x + speed, y);
         img = Sprite.movingSprite(Sprite.player_right,
                 Sprite.player_right_1,
                 Sprite.player_right_2,
@@ -150,7 +153,7 @@ public class Bomber extends AnimatedEntity {
     }
 
     public void moveLeft() {
-        moveTo(x - BombermanGame.MOVING_UNIT, y);
+        moveTo(x - speed, y);
         img = Sprite.movingSprite(Sprite.player_left,
                 Sprite.player_left_1,
                 Sprite.player_left_2,
@@ -158,7 +161,7 @@ public class Bomber extends AnimatedEntity {
     }
 
     public void moveUp() {
-        moveTo(x, y - BombermanGame.MOVING_UNIT);
+        moveTo(x, y - speed);
         img = Sprite.movingSprite(Sprite.player_up,
                 Sprite.player_up_1,
                 Sprite.player_up_2,
@@ -166,7 +169,7 @@ public class Bomber extends AnimatedEntity {
     }
 
     public void moveDown() {
-        moveTo(x, y + BombermanGame.MOVING_UNIT);
+        moveTo(x, y + speed);
         img = Sprite.movingSprite(Sprite.player_down,
                 Sprite.player_down_1,
                 Sprite.player_down_2,

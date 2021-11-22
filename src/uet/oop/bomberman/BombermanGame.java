@@ -15,6 +15,7 @@ import uet.oop.bomberman.entities.Enemy.*;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
 import uet.oop.bomberman.entities.buffItems.Bomb;
 import uet.oop.bomberman.entities.buffItems.Flame;
+import uet.oop.bomberman.entities.buffItems.Speed;
 import uet.oop.bomberman.entities.staticEntities.Grass;
 import uet.oop.bomberman.entities.staticEntities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -33,7 +34,6 @@ public class BombermanGame extends Application {
     public static final int HEIGHT = 15;
     public static final long TIME_UNIT = 10_000_000; // 10 ms
     public static final int MOVING_UNIT = 2;
-    public static double PLAYERSPEED = 1.0;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
@@ -160,6 +160,7 @@ public class BombermanGame extends Application {
         /** testing */
         entities.add(new Bomb(4, 5));
         entities.add(new Flame(8, 5));
+        entities.add(new Speed(12, 5));
         /** end test */
 
         // Tao bomberman
