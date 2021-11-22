@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
@@ -21,6 +20,9 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.ArrayList;
 import java.util.List;
 
+/** TO DO:
+ * detach entities to "bomberman", "enemies" and "others". */
+
 public class BombermanGame extends Application {
     
     public static final int WINDOW_WIDTH = 20;
@@ -33,6 +35,7 @@ public class BombermanGame extends Application {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> updateQueue = new ArrayList<>();
+    private Bomber bomberman;
     private static int score;
     private GraphicsContext gc;
     private Canvas canvas;
@@ -63,25 +66,7 @@ public class BombermanGame extends Application {
         scoreBoard.setFont(Font.font(18));
         scoreBoard.setStyle("-fx-background-color: #a9a8a8; -fx-text-fill: black;");
 
-        // Tao bomberman
-        Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
-
-        /** testing */
-        entities.add(new IncreaseBombs(4, 5, Sprite.powerup_bombs.getFxImage()));
-        /** end test */
-
-        //tao enemy luu y toc do tung con
-        Balloom balloom = new Balloom(13, 13, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
-        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
-        Doll doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
-        Kondoria kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
-        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
-        entities.add(minvo);
-        entities.add(kondoria);
-        entities.add(oneal);
-        entities.add(balloom);
-        entities.add(doll);
+        createCharacters();
 
         // Tao root container
         Group root = new Group();
@@ -97,33 +82,12 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root,
                 Sprite.SCALED_SIZE * WINDOW_WIDTH,
-                Sprite.SCALED_SIZE * HEIGHT);
+                Sprite.SCALED_SIZE * WINDOW_HEIGHT);
         scene.setOnKeyPressed(keyEvent -> {
-            switch (keyEvent.getCode()) {
-                case RIGHT:
-                    bomberman.setDirection(Bomber.RIGHT);
-                    break;
-                case LEFT:
-                    bomberman.setDirection(Bomber.LEFT);
-                    break;
-                case UP:
-                    bomberman.setDirection(Bomber.UP);
-                    break;
-                case DOWN:
-                    bomberman.setDirection(Bomber.DOWN);
-                    break;
-                case SPACE:
-                    bomberman.planBomb();
-                    break;
-            }
+            bomberman.controlPressing(keyEvent.getCode());
         });
         scene.setOnKeyReleased(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.UP ||
-                    keyEvent.getCode() == KeyCode.DOWN ||
-                    keyEvent.getCode() == KeyCode.LEFT ||
-                    keyEvent.getCode() == KeyCode.RIGHT) {
-                bomberman.setDirection(Bomber.CENTER);
-            }
+            bomberman.controlReleasing(keyEvent.getCode());
         });
 
         // Them scene vao stage
@@ -154,7 +118,6 @@ public class BombermanGame extends Application {
         timer.start();
 
         createMap();
-
     }
 
     public void createMap() {
@@ -174,6 +137,30 @@ public class BombermanGame extends Application {
                 stillObjects.add(object);
             }
         }
+    }
+
+    private void createCharacters() {
+
+        /** testing */
+        entities.add(new IncreaseBombs(4, 5, Sprite.powerup_bombs.getFxImage()));
+        /** end test */
+
+        // Tao bomberman
+        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        entities.add(bomberman);
+
+        //tao enemy luu y toc do tung con
+        Balloom balloom = new Balloom(13, 13, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
+        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
+        Doll doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
+        Kondoria kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
+        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
+        entities.add(minvo);
+        entities.add(kondoria);
+        entities.add(oneal);
+        entities.add(balloom);
+        entities.add(doll);
+
     }
 
     public void update() {

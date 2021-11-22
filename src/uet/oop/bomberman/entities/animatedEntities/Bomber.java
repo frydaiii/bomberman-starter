@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.animatedEntities;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
@@ -34,6 +35,35 @@ public class Bomber extends AnimatedEntity {
         maxBombs = 1;
         plannedBomb = new ArrayList<>();
         alive = true;
+    }
+
+    public void controlPressing(KeyCode keyCode) {
+        switch (keyCode) {
+            case RIGHT:
+                setDirection(Bomber.RIGHT);
+                break;
+            case LEFT:
+                setDirection(Bomber.LEFT);
+                break;
+            case UP:
+                setDirection(Bomber.UP);
+                break;
+            case DOWN:
+                setDirection(Bomber.DOWN);
+                break;
+            case SPACE:
+                planBomb();
+                break;
+        }
+    }
+
+    public void controlReleasing(KeyCode keyCode) {
+        if (keyCode == KeyCode.UP ||
+                keyCode == KeyCode.DOWN ||
+                keyCode == KeyCode.LEFT ||
+                keyCode == KeyCode.RIGHT) {
+            setDirection(Bomber.CENTER);
+        }
     }
 
     public void setDirection(String direction) {
