@@ -26,11 +26,11 @@ public abstract class Entity {
     }
 
     public int getX() {
-        return x; // Sprite.SCALED_SIZE;
+        return x;
     }
 
     public int getY() {
-        return y; // Sprite.SCALED_SIZE;
+        return y;
     }
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas

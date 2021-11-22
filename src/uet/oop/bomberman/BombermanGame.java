@@ -168,11 +168,11 @@ public class BombermanGame extends Application {
         entities.add(bomberman);
 
         //tao enemy luu y toc do tung con
-        Balloom balloom = new Balloom(13, 13, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
-        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
-        Doll doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
-        Kondoria kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
-        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
+        Enemy balloom = new Balloom(13, 13, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
+        Enemy oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
+        Enemy doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
+        Enemy kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
+        Enemy minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
         entities.add(minvo);
         entities.add(kondoria);
         entities.add(oneal);

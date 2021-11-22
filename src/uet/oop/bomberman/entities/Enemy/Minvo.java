@@ -7,7 +7,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Minvo extends Enemy {
     public Minvo(int x, int y, Image img, double speed, Bomber bomber) {
-        super(x, y, img, speed);
+        super(x, y, img, speed, 300);
         super.fp = new findPathAdvanced(bomber, this);
         this.MAX_STEPS = Sprite.DEFAULT_SIZE * 3;
     }
@@ -46,6 +46,7 @@ public class Minvo extends Enemy {
                     500_000_000).getFxImage();
             dyingAnimatedTime -= BombermanGame.TIME_UNIT;
         } else {
+            BombermanGame.increaseScore(point);
             setVisible(false);
 //            BombermanGame.entities.add(new Doll(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE, Sprite.doll_right1.getFxImage(), this.speed / 2));
 //            BombermanGame.entities.remove(this);
