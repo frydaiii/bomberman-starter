@@ -100,19 +100,11 @@ public class Bomber extends AnimatedEntity {
         }
 
         for (Entity entity: BombermanGame.entities) {
-            String className = entity.getClass().getTypeName();
-//            if (className.contains("Bomber") ||
-//                className.contains("Bomb") ||
-//                !entity.isVisible()) {
-//                continue;
-//            }
-//            if (!className.contains("flames") ||
-////                !className.contains("buffItems") ||
-//                !entity.isVisible()) {
-//                continue;
-//            }
-
             if (entity.existOnSquare(x, y) && entity.isVisible()) {
+                String className = entity.getClass().getTypeName();
+                if (className.contains("Brick")) {
+                    return;
+                }
                 if (className.contains("flames") || className.contains("Enemy")) {
                     setAlive(false);
                 }

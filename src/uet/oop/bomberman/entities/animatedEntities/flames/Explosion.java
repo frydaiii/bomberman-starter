@@ -5,12 +5,13 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntity;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
+import uet.oop.bomberman.entities.animatedEntities.Brick;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
 
 public class Explosion extends AnimatedEntity {
-    private long limitedTime = 2_000_000_000l;
+    private long limitedTime = 500_000_000l;
     protected ArrayList<Sprite> sprites;
 
     public Explosion(int xUnit, int yUnit, Image img) {
@@ -31,17 +32,23 @@ public class Explosion extends AnimatedEntity {
     }
 
     public boolean canExplode() {
+        for (Entity entity: BombermanGame.entities) {
+            String className = entity.getClass().getTypeName();
+            if (this.existOnSquare(entity.getX(), entity.getY()) && entity.isVisible()) {
+                if (className.contains("Bomber")) {
+                    ((Bomber) entity).setAlive(false);
+                    break;
+                }
+                if (className.contains("Brick")) {
+                    ((Brick) entity).setBroken(true);
+                    return false;
+                }
+            }
+        }
         for (Entity entity: BombermanGame.stillObjects) {
             if (this.existOn(entity.getX(), entity.getY()) &&
                 !entity.getClass().getTypeName().contains("Grass")) {
                 return false;
-            }
-        }
-        for (Entity entity: BombermanGame.entities) {
-            if (this.existOnSquare(entity.getX(), entity.getY()) &&
-                entity.getClass().getTypeName().contains("Bomber")) {
-                ((Bomber) entity).setAlive(false);
-                break;
             }
         }
         return true;
@@ -54,7 +61,7 @@ public class Explosion extends AnimatedEntity {
             img = Sprite.movingSprite(sprites.get(0),
                     sprites.get(1),
                     sprites.get(2),
-                    animatedTime, 500_000_000).getFxImage();
+                    animatedTime, 250_000_000).getFxImage();
 
         } else{
             setVisible(false);
