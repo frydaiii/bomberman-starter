@@ -14,6 +14,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.Enemy.*;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
 import uet.oop.bomberman.entities.buffItems.Bomb;
+import uet.oop.bomberman.entities.buffItems.Flame;
 import uet.oop.bomberman.entities.staticEntities.Grass;
 import uet.oop.bomberman.entities.staticEntities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -157,7 +158,8 @@ public class BombermanGame extends Application {
     private void createCharacters() {
 
         /** testing */
-        entities.add(new Bomb(4, 5, Sprite.powerup_bombs.getFxImage()));
+        entities.add(new Bomb(4, 5));
+        entities.add(new Flame(8, 5));
         /** end test */
 
         // Tao bomberman

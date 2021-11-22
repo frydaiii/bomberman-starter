@@ -1,13 +1,17 @@
 package uet.oop.bomberman.entities.animatedEntities;
 
+import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends AnimatedEntity{
     private final long limitedTime = 2_000_000_000l; // 2s
     private boolean exploded;
+    private int explodeRange;
 
-    public Bomb(int xUnit, int yUnit) {
+
+    public Bomb(int xUnit, int yUnit, int explodeRange) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
+        this.explodeRange = explodeRange;
         exploded = false;
     }
 
@@ -20,7 +24,7 @@ public class Bomb extends AnimatedEntity{
      * and add it into entities */
 
     public void explode() {
-        ExplosionController explosion = new ExplosionController(xUnit, yUnit);
+        ExplosionController explosion = new ExplosionController(xUnit, yUnit, explodeRange);
         explosion.begin();
     }
 

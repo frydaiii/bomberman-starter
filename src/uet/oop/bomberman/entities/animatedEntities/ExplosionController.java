@@ -8,10 +8,10 @@ public class ExplosionController {
     private int yUnit;
     private int maxRange;
 
-    public ExplosionController(int xUnit, int yUnit) {
+    public ExplosionController(int xUnit, int yUnit, int maxRange) {
         this.xUnit = xUnit;
         this.yUnit = yUnit;
-        maxRange = 2;
+        this.maxRange = maxRange;
     }
 
     public void begin() {

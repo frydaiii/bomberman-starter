@@ -16,6 +16,7 @@ public class Bomber extends AnimatedEntity {
     public static final String CENTER = "CENTER";
 
     private int maxBombs;
+    private int maxExplodeRange;
     private String direction;
     private ArrayList<Bomb> plannedBomb;
 
@@ -32,6 +33,7 @@ public class Bomber extends AnimatedEntity {
         super( x, y, img);
         direction = CENTER;
         maxBombs = 1;
+        maxExplodeRange = 2;
         plannedBomb = new ArrayList<>();
         alive = true;
     }
@@ -126,6 +128,11 @@ public class Bomber extends AnimatedEntity {
 //                        bombsBuff = 0; // active buff
                         entity.setVisible(false);
                     }
+                    if (className.contains("Flame") && entity.isVisible()) {
+                        maxExplodeRange++;
+//                        bombsBuff = 0; // active buff
+                        entity.setVisible(false);
+                    }
                 }
 //                return;
             }
@@ -176,7 +183,7 @@ public class Bomber extends AnimatedEntity {
 
         int xBomb = (int) Math.round((1.0 * x / Sprite.SCALED_SIZE));
         int yBomb = (int) Math.round((1.0 * y / Sprite.SCALED_SIZE));
-        Bomb bomb = new Bomb(xBomb, yBomb);
+        Bomb bomb = new Bomb(xBomb, yBomb, maxExplodeRange);
         BombermanGame.updateQueue.add(bomb);
         plannedBomb.add(bomb);
     }
