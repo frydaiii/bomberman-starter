@@ -16,12 +16,17 @@ import uet.oop.bomberman.entities.animatedEntities.Bomber;
 import uet.oop.bomberman.entities.buffItems.Bomb;
 import uet.oop.bomberman.entities.buffItems.Flame;
 import uet.oop.bomberman.entities.buffItems.Speed;
+import uet.oop.bomberman.entities.animatedEntities.Brick;
 import uet.oop.bomberman.entities.staticEntities.Grass;
+import uet.oop.bomberman.entities.staticEntities.Portal;
 import uet.oop.bomberman.entities.staticEntities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /** TO DO:
  * detach entities to "bomberman", "enemies" and "others". */
@@ -29,11 +34,11 @@ import java.util.List;
 public class BombermanGame extends Application {
     
     public static final int WINDOW_WIDTH = 20;
-    public static final int WINDOW_HEIGHT = 16;
-    public static final int WIDTH = 30;
-    public static final int HEIGHT = 15;
+    public static final int WINDOW_HEIGHT = 14;
     public static final long TIME_UNIT = 10_000_000; // 10 ms
     public static final int MOVING_UNIT = 2;
+    public static final int HEIGHT = 13;
+    public static int width = 30;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
@@ -54,11 +59,6 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-        canvas.setLayoutY((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
-        gc = canvas.getGraphicsContext2D();
-
         // score board
         score = 0;
         scoreBoard = new TextField();
@@ -80,19 +80,14 @@ public class BombermanGame extends Application {
             System.out.println("helo");
         });
 
-        createCharacters();
+//        createCharacters();
+        createMap(1);
 
         // Tao root container
         Group root = new Group();
-        root.getChildren().add(canvas);
+        root.getChildren().add(canvas); // created in createMap()
         root.getChildren().add(scoreBoard);
         root.getChildren().add(pauseButton);
-//        Button helo = new Button("helo");
-//        helo.setFocusTraversable(false);
-//        helo.setOnAction(event -> {
-//            System.out.println("clicky");
-//        });
-//        root.getChildren().add(helo);
 
         // Tao scene
         Scene scene = new Scene(root,
@@ -120,65 +115,108 @@ public class BombermanGame extends Application {
                     render();
 
                     if (bomberman.getX() >= (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 &&
-                    bomberman.getX() <= (WIDTH - WINDOW_WIDTH / 2) * Sprite.SCALED_SIZE) {
+                    bomberman.getX() <= (width - WINDOW_WIDTH / 2) * Sprite.SCALED_SIZE) {
                         double distance = (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX();
                         root.setLayoutX(distance);
                         scoreBoard.setLayoutX(-distance);
                         pauseButton.setLayoutX(-distance + (WINDOW_WIDTH * Sprite.SCALED_SIZE - 70));
                     }
-
                 }
-
             }
         };
         timer.start();
 
-        createMap();
     }
 
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+    public void createMap(int level) {
+        Integer convert_level = level;
+        String filename = "res//levels//Level" + convert_level.toString() + ".txt";
+        int read_level;
+        int height = HEIGHT;
+        String []map = new String[height];
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+            read_level = myReader.nextInt();
+            height = myReader.nextInt();
+            width = myReader.nextInt();
+            map = new String[height];
+            int i = 0;
+            myReader.nextLine();
+            while (i < height) {
+                map[i] = new String();
+                map[i] = myReader.nextLine();
+                i += 1;
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        // Tao Canvas
+        canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
+        canvas.setLayoutY((WINDOW_HEIGHT - height) * Sprite.SCALED_SIZE);
+        gc = canvas.getGraphicsContext2D();
+
+        int player_x = 1;
+        int player_y = 1;
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Entity object = new Grass(i, j);
+                String type_entity = Character.toString(map[j].charAt(i));
+                if (type_entity.equals("p")) {
+                    player_x = i;
+                    player_y = j;
                 }
-                else if (2 <= i && i < WIDTH - 2 &&
-                        2 <= j && j < HEIGHT &&
-                        i % 2 == 0 && j % 2 == 0) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                } else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                if (type_entity.equals("#")) {
+                    object = new Wall(i, j);
+                } else if(type_entity.equals("x")) {
+                    //portal
+                    object = new Portal(i, j);
                 }
                 stillObjects.add(object);
             }
         }
-    }
-
-    private void createCharacters() {
-
-        /** testing */
-        entities.add(new Bomb(4, 5));
-        entities.add(new Flame(8, 5));
-        entities.add(new Speed(12, 5));
-        /** end test */
-
-        // Tao bomberman
-        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        bomberman = new Bomber(player_x, player_y, Sprite.player_right.getFxImage());
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Entity object = new Balloom(i, j, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
+                boolean check = true;
+                String type_entity = Character.toString(map[j].charAt(i));
+                if (type_entity.equals("2")) {
+                    object = new Oneal(i, j, Sprite.oneal_right1.getFxImage(), MOVING_UNIT / 1.5, bomberman);
+                } else if (type_entity.equals("5")) {
+                    object = new Doll(i, j, Sprite.doll_left1.getFxImage(), MOVING_UNIT / 2);
+                } else if(type_entity.equals("4")) {
+                    object = new Minvo(i, j, Sprite.minvo_right2.getFxImage(), MOVING_UNIT / 1.75, bomberman);
+                }
+                else if (type_entity.equals("3")) {
+                    object = new Kondoria(i, j, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT / 4, bomberman);
+                }
+                else if (type_entity.equals("b")) {
+                    object = new Bomb(i, j);
+                }
+                else if (type_entity.equals("f")) {
+                    //flame item
+                    object = new Flame(i, j);
+                }
+                else if (type_entity.equals("s")) {
+                    //speed item
+                    object = new Speed(i, j);
+                }
+                else if (type_entity.equals("*") || type_entity.equals("x")) {
+                    object = new Brick(i, j);
+                }
+                else if (! type_entity.equals("1")) {
+                    check = false;
+                }
+                if(check)
+                    entities.add(object);
+            }
+        }
         entities.add(bomberman);
-
-        //tao enemy luu y toc do tung con
-        Balloom balloom = new Balloom(13, 13, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
-        Oneal oneal = new Oneal(5, 5, Sprite.oneal_right1.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
-        Doll doll = new Doll(11, 11, Sprite.doll_left1.getFxImage(), MOVING_UNIT * 1.0);
-        Kondoria kondoria = new Kondoria(7, 7, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT * 1.0/4, bomberman);
-        Minvo minvo = new Minvo(3, 3, Sprite.minvo_right2.getFxImage(), MOVING_UNIT * 1.0 / 2, bomberman);
-        entities.add(minvo);
-        entities.add(kondoria);
-        entities.add(oneal);
-        entities.add(balloom);
-        entities.add(doll);
-
     }
 
     public void update() {
@@ -199,13 +237,24 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        /** render in order:
+         * static entities
+         * flames
+         * other animate entities*/
         stillObjects.forEach(g -> {
             if (g.isVisible()) {
                 g.render(gc);
             }
         });
         entities.forEach(g -> {
-            if (g.isVisible()) {
+            if (g.isVisible()
+                && g.getClass().getTypeName().contains("flames")) {
+                g.render(gc);
+            }
+        });
+        entities.forEach(g -> {
+            if (g.isVisible()
+                && !g.getClass().getTypeName().contains("flames")) {
                 g.render(gc);
             }
         });
