@@ -82,7 +82,7 @@ public class Bomber extends AnimatedEntity {
                 if (entity.existOnSquare(x, y)) {
                     int diffX = this.x % Sprite.SCALED_SIZE;
                     int diffY = this.y % Sprite.SCALED_SIZE;
-                    if (diffX < 5 && diffY == 0) {
+                    if (diffX < 10 && diffY == 0) {
                         this.x -= diffX;
                     }
                     if (diffY < 5 && diffX == 0) {

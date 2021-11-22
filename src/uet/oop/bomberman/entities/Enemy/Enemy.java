@@ -100,14 +100,14 @@ public abstract class Enemy extends AnimatedEntity {
         for (Entity entity: BombermanGame.entities) {
             if (entity.existOnSquare(x, y) && entity.isVisible()) {
                 String className = entity.getClass().getTypeName();
-                if (className.contains("Bomb") || className.contains("Brick")) {
-                    return false;
-                }
                 if (className.contains("flames")) {
                     setAlive(false);
                 }
-              if (className.contains("Bomber")) {
+                if (className.contains("Bomber")) {
                     ((Bomber) entity).setAlive(false);
+                }
+                if (className.contains("Bomb") || className.contains("Brick")) {
+                    return false;
                 }
             }
         }
