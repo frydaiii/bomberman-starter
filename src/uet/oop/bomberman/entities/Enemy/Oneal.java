@@ -8,7 +8,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Oneal extends Enemy {
     public Oneal(int x, int y, Image img, double speed, Bomber bomber) {
-        super(x, y, img, speed);
+        super(x, y, img, speed, 200);
         super.fp = new findPathAdvanced(bomber, this);
     }
 
@@ -46,6 +46,7 @@ public class Oneal extends Enemy {
                     500_000_000).getFxImage();
             dyingAnimatedTime -= BombermanGame.TIME_UNIT;
         } else {
+            BombermanGame.increaseScore(point);
             setVisible(false);
         }
     }

@@ -4,9 +4,11 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntity;
+import uet.oop.bomberman.entities.animatedEntities.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Enemy extends AnimatedEntity {
+    protected int point;
     // Tốc độ của các con quái là khác nhau
     protected double speed;
 
@@ -25,9 +27,10 @@ public abstract class Enemy extends AnimatedEntity {
     protected long dyingAnimatedTime = 1_000_000_000l;
 
 
-    public Enemy(int x, int y, Image img, double speed) {
+    public Enemy(int x, int y, Image img, double speed, int point) {
         super(x, y, img);
         this.speed = speed;
+        this.point = point;
 
         MAX_STEPS = Sprite.DEFAULT_SIZE / speed;
         rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
@@ -62,6 +65,13 @@ public abstract class Enemy extends AnimatedEntity {
         }
     }
 
+    public void calculateMove2() {
+        int left = -1, right = 1, up = -1, down = 1;
+        int xa, ya;
+
+
+    }
+
 
     public void move(double xa, double ya) {
         if (!alive) {
@@ -79,6 +89,14 @@ public abstract class Enemy extends AnimatedEntity {
             }
         }
 
+//        for (Entity entity: BombermanGame.entities) {
+//            if (this.existOnSquare(entity.getX(), entity.getY()) &&
+//                    entity.getClass().getTypeName().contains("Bomber")) {
+//                ((Bomber) entity).setAlive(false);
+//                break;
+//            }
+//        }
+
         for (Entity entity: BombermanGame.entities) {
             if (entity.existOnSquare(x, y) && entity.isVisible()) {
                 String className = entity.getClass().getTypeName();
@@ -88,8 +106,13 @@ public abstract class Enemy extends AnimatedEntity {
                 if (className.contains("flames")) {
                     setAlive(false);
                 }
+              if (className.contains("Bomber")) {
+                    ((Bomber) entity).setAlive(false);
+                }
             }
         }
+
+
 
         return true;
     }

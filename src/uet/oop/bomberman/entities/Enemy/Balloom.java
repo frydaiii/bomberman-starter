@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Balloom extends Enemy {
     public Balloom(int x, int y, Image img, double speed) {
-        super(x, y, img, speed);
+        super(x, y, img, speed, 100);
         super.fp = new findPathBasic();
     }
 
@@ -55,6 +55,7 @@ public class Balloom extends Enemy {
                     500_000_000).getFxImage();
             dyingAnimatedTime -= BombermanGame.TIME_UNIT;
         } else {
+            BombermanGame.increaseScore(point);
             setVisible(false);
         }
     }

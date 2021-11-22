@@ -7,7 +7,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Doll extends Enemy {
     public Doll(int x, int y, Image img, double speed) {
-        super(x, y, img, speed);
+        super(x, y, img, speed, 250);
         super.fp = new findPathBasic();
         this.MAX_STEPS = Sprite.DEFAULT_SIZE * 2;
     }
@@ -46,6 +46,7 @@ public class Doll extends Enemy {
                     500_000_000).getFxImage();
             dyingAnimatedTime -= BombermanGame.TIME_UNIT;
         } else {
+            BombermanGame.increaseScore(point);
             setVisible(false);
         }
     }

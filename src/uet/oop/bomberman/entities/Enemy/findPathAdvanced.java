@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.Enemy;
 
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
+import uet.oop.bomberman.graphics.Sprite;
 
 public class findPathAdvanced extends findPath {
     Bomber player;
