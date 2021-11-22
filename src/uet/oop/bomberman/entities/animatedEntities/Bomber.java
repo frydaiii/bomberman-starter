@@ -24,12 +24,6 @@ public class Bomber extends AnimatedEntity {
     private boolean alive;
     private long dyingAnimatedTime = 1_000_000_000l;
 
-    /** buff state; -1 is inactive. */
-    private long bombsBuff = -1;
-
-    /** time limit of buff. */
-    private long bombsBuffTime = 5_000_000_000l; // 5s
-
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
         direction = CENTER;
@@ -117,27 +111,25 @@ public class Bomber extends AnimatedEntity {
 //                !entity.isVisible()) {
 //                continue;
 //            }
-            if (className.contains("flames") && entity.existOnSquare(x, y) &&
-                entity.isVisible()) {
-                setAlive(false);
-            }
 
-            if (entity.existOnSquare(x, y)) {
+            if (entity.existOnSquare(x, y) && entity.isVisible()) {
+                if (className.contains("flames")) {
+                    setAlive(false);
+                }
                 if (className.contains("buffItems")) {
-                    if (className.contains("Bomb") && entity.isVisible()) {
+                    if (className.contains("Bomb")) {
                         maxBombs++;
                         entity.setVisible(false);
                     }
-                    if (className.contains("Flame") && entity.isVisible()) {
+                    if (className.contains("Flame")) {
                         maxExplodeRange++;
                         entity.setVisible(false);
                     }
-                    if (className.contains("Speed") && entity.isVisible()) {
+                    if (className.contains("Speed")) {
                         speed++;
                         entity.setVisible(false);
                     }
                 }
-//                return;
             }
         }
         this.x = x;
@@ -189,17 +181,6 @@ public class Bomber extends AnimatedEntity {
         Bomb bomb = new Bomb(xBomb, yBomb, maxExplodeRange);
         BombermanGame.updateQueue.add(bomb);
         plannedBomb.add(bomb);
-    }
-
-    private void updateBuff() {
-        if (bombsBuff != -1) { // -1 is inactive state
-            bombsBuffTime -= BombermanGame.TIME_UNIT;
-        }
-        if (bombsBuffTime < 0) { // expiration of activation
-            bombsBuff = -1;
-            maxBombs = 1;
-            bombsBuffTime = 5_000_000_000l;
-        }
     }
 
     @Override
