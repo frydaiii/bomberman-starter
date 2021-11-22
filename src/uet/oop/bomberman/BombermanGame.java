@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -62,10 +63,21 @@ public class BombermanGame extends Application {
         scoreBoard = new TextField();
         scoreBoard.setEditable(false);
         scoreBoard.setFocusTraversable(false);
-        scoreBoard.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE);
+        scoreBoard.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
         scoreBoard.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
         scoreBoard.setFont(Font.font(18));
         scoreBoard.setStyle("-fx-background-color: #a9a8a8; -fx-text-fill: black;");
+
+        // button
+        Button pauseButton = new Button("Pause");
+        pauseButton.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
+        pauseButton.setPrefWidth(70);
+        pauseButton.setLayoutX(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
+//        pauseButton.setStyle("-fx-background-color: #a9a8a8;");
+        pauseButton.setFocusTraversable(false);
+        pauseButton.setOnAction(actionEvent -> {
+            System.out.println("helo");
+        });
 
         createCharacters();
 
@@ -73,6 +85,7 @@ public class BombermanGame extends Application {
         Group root = new Group();
         root.getChildren().add(canvas);
         root.getChildren().add(scoreBoard);
+        root.getChildren().add(pauseButton);
 //        Button helo = new Button("helo");
 //        helo.setFocusTraversable(false);
 //        helo.setOnAction(event -> {
