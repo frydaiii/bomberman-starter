@@ -20,17 +20,23 @@ public class Balloom extends Enemy {
         switch (direction) {
             //move right
             case 1:
-                img = Sprite.movingSprite(Sprite.balloom_right1,
-                        Sprite.balloom_right2,
-                        Sprite.balloom_right3,
-                        animatedTime, 200_000_000).getFxImage();
+                img = Sprite.balloom_right2.getFxImage();
+                if (moving) {
+                    img = Sprite.movingSprite(Sprite.balloom_right1,
+                            Sprite.balloom_right2,
+                            Sprite.balloom_right3,
+                            animatedTime, 200_000_000).getFxImage();
+                }
                 break;
             //move left
             case 3:
-                img = Sprite.movingSprite(Sprite.balloom_left1,
-                        Sprite.balloom_left2,
-                        Sprite.balloom_left3,
-                        animatedTime, 200_000_000).getFxImage();
+                img = Sprite.balloom_left1.getFxImage();
+                if (moving) {
+                    img = Sprite.movingSprite(Sprite.balloom_left1,
+                            Sprite.balloom_left2,
+                            Sprite.balloom_left3,
+                            animatedTime, 200_000_000).getFxImage();
+                }
                 break;
             //move up and down
             default:

@@ -31,6 +31,7 @@ public class BombermanGame extends Application {
     public static final int HEIGHT = 15;
     public static final long TIME_UNIT = 10_000_000; // 10 ms
     public static final int MOVING_UNIT = 2;
+    public static double PLAYERSPEED = 1.0;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();

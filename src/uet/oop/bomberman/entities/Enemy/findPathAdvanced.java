@@ -41,9 +41,9 @@ public class findPathAdvanced extends findPath {
     }
 
     protected int calculateColDirection() {
-        if (player.getXPlayer() < enemy.getXEnemy()) {
+        if (player.getX() < enemy.getX()) {
             return 3;
-        } else if (player.getXPlayer() > enemy.getXEnemy()) {
+        } else if (player.getX() > enemy.getX()) {
             return 1;
         }
 
@@ -51,9 +51,9 @@ public class findPathAdvanced extends findPath {
     }
 
     protected int calculateRowDirection() {
-        if (player.getYPlayer() < enemy.getYEnemy()) {
+        if (player.getY() < enemy.getY()) {
             return 0;
-        } else if (player.getYPlayer() > enemy.getYEnemy()) {
+        } else if (player.getY() > enemy.getY()) {
             return 2;
         }
 
