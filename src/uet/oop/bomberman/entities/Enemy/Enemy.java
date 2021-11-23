@@ -14,17 +14,21 @@ public abstract class Enemy extends AnimatedEntity {
 
     //Class chứa hàm tìm đường đi
     protected findPath fp;
+    protected findPath fp2 = new findPathBasic();
 
     // Làm mượt chuyển động của quái
     protected double MAX_STEPS;
     protected final double rest;
     protected double steps;
     protected int direction = -1;
+    protected int direction2 = -1;
     protected boolean moving = true;
 
     // Kiểm tra dead or alive
     protected boolean alive = true;
     protected long dyingAnimatedTime = 1_000_000_000l;
+
+    protected boolean collideBomb = false;
 
 
     public Enemy(int x, int y, Image img, double speed, int point) {
@@ -39,10 +43,13 @@ public abstract class Enemy extends AnimatedEntity {
 
     public void calculateMove() {
         int xa = 0, ya = 0;
-        if(steps <= 0) {
-            direction = fp.calculateDirection();
-            steps = MAX_STEPS;
-        }
+        int yrandom = 0, xrandom = 0;
+//        if(steps <= 0) {
+//            direction = fp.calculateDirection();
+//            direction2 = fp2.calculateDirection();
+//            steps = MAX_STEPS;
+//        }
+        direction = fp.calculateDirection();
 
         /*
         1: move right
@@ -50,28 +57,31 @@ public abstract class Enemy extends AnimatedEntity {
         0: move down
         2: move up
          */
+
+
         if(direction == 0) ya--;
         if(direction == 2) ya++;
         if(direction == 3) xa--;
         if(direction == 1) xa++;
 
-        if(canMove(x + xa, y) && canMove(x, y + ya)) {
-            steps -= 1 + rest;
+
+        if(canMove(x + xa, y) && canMove(x, y + ya) ) {
+            //steps -= 1 + rest;
             move(xa * speed, ya * speed);
             moving = true;
+        } else if (canMove(x - xa, y) && canMove(x,y - ya)) {
+            steps -= 1 + rest;
+            move(-xa * speed, -ya * speed);
+            moving = true;
         } else {
-            steps = 0;
-            moving = false;
+
+                steps = 0;
+                moving = false;
+
+
         }
-    }
-
-    public void calculateMove2() {
-        int left = -1, right = 1, up = -1, down = 1;
-        int xa, ya;
-
 
     }
-
 
     public void move(double xa, double ya) {
         if (!alive) {
@@ -89,13 +99,6 @@ public abstract class Enemy extends AnimatedEntity {
             }
         }
 
-//        for (Entity entity: BombermanGame.entities) {
-//            if (this.existOnSquare(entity.getX(), entity.getY()) &&
-//                    entity.getClass().getTypeName().contains("Bomber")) {
-//                ((Bomber) entity).setAlive(false);
-//                break;
-//            }
-//        }
 
         for (Entity entity: BombermanGame.entities) {
             String className = entity.getClass().getTypeName();
@@ -106,14 +109,12 @@ public abstract class Enemy extends AnimatedEntity {
                 if (className.contains("Bomber")) {
                     ((Bomber) entity).setAlive(false);
                 }
-            }
 
-            if (className.contains("Bomb") && entity.existOnSquare(x, y) && entity.isVisible()) {
-                return false;
+                if (className.contains("Bomb") && entity.existOnSquare(x, y) && entity.isVisible()) {
+                    return false;
+                }
             }
         }
-
-
 
         return true;
     }

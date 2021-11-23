@@ -41,7 +41,7 @@ public class findPathAdvanced extends findPath {
 
     }
 
-    protected int calculateColDirection() {
+    public int calculateColDirection() {
         if (player.getX() < enemy.getX()) {
             return 3;
         } else if (player.getX() > enemy.getX()) {
@@ -51,7 +51,7 @@ public class findPathAdvanced extends findPath {
         return -1;
     }
 
-    protected int calculateRowDirection() {
+    public int calculateRowDirection() {
         if (player.getY() < enemy.getY()) {
             return 0;
         } else if (player.getY() > enemy.getY()) {

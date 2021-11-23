@@ -33,6 +33,14 @@ public abstract class Entity {
         return y;
     }
 
+    public int getXTile() {
+        return this.xUnit;
+    }
+
+    public int getYTile() {
+        return this.yUnit;
+    }
+
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
         this.xUnit = xUnit;
