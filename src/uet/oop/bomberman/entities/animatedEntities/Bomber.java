@@ -82,7 +82,7 @@ public class Bomber extends AnimatedEntity {
                 if (entity.existOnSquare(x, y)) {
                     int diffX = this.x % Sprite.SCALED_SIZE;
                     int diffY = this.y % Sprite.SCALED_SIZE;
-                    if (diffX < 5 && diffY == 0) {
+                    if (diffX < 10 && diffY == 0) {
                         this.x -= diffX;
                     }
                     if (diffY < 5 && diffX == 0) {
@@ -100,19 +100,11 @@ public class Bomber extends AnimatedEntity {
         }
 
         for (Entity entity: BombermanGame.entities) {
-            String className = entity.getClass().getTypeName();
-//            if (className.contains("Bomber") ||
-//                className.contains("Bomb") ||
-//                !entity.isVisible()) {
-//                continue;
-//            }
-//            if (!className.contains("flames") ||
-////                !className.contains("buffItems") ||
-//                !entity.isVisible()) {
-//                continue;
-//            }
-
             if (entity.existOnSquare(x, y) && entity.isVisible()) {
+                String className = entity.getClass().getTypeName();
+                if (className.contains("Brick")) {
+                    return;
+                }
                 if (className.contains("flames") || className.contains("Enemy")) {
                     setAlive(false);
                 }
