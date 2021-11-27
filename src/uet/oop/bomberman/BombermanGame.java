@@ -50,6 +50,9 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private TextField scoreBoard;
 
+    public static boolean condition = false;
+    public static int currentLevel = 1;
+    public static int nextLevel;
     public static boolean isBomberOnThePortal = false;
 
     public static void main(String[] args) {
@@ -279,6 +282,13 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        //change level if condition = true
+        if (checkCondition()) {
+            nextLevel = ++currentLevel;
+            createMap(nextLevel);
+            currentLevel++;
+        }
+
         // update scoreBoard
         scoreBoard.setText("Score: " + score + "      Lives: " + lives);
 
