@@ -50,6 +50,8 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private TextField scoreBoard;
 
+    public static boolean isBomberOnThePortal = false;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -239,6 +241,41 @@ public class BombermanGame extends Application {
         alert.setOnHidden(evt -> Platform.exit());
 
         alert.show();
+    }
+
+    // check if portal isn't under the brick
+    public boolean checkPortal() {
+        int xPortal = 0, yPortal = 0;
+        for (Entity entity: stillObjects) {
+            String className = entity.getClass().getTypeName();
+            if (className.contains("Portal")) {
+                xPortal = entity.getX();
+                yPortal = entity.getY();
+            }
+        }
+
+        for (Entity entity: entities) {
+            String className = entity.getClass().getTypeName();
+            if (entity.existOnSquare(xPortal, yPortal) && className.contains("Brick") && entity.isVisible()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkCondition() {
+        for (Entity entity: entities) {
+            String className = entity.getClass().getTypeName();
+            if (className.contains("Enemy") && entity.isVisible()) {
+                return false;
+            }
+        }
+        if (checkPortal() && isBomberOnThePortal) {
+            return true;
+        }
+
+        return false;
     }
 
     public void update() {
