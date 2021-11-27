@@ -49,6 +49,11 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private TextField scoreBoard;
 
+    public static boolean condition = false;
+    public static int currentLevel = 1;
+    public static int nextLevel;
+    public static boolean isBomberOnThePortal = false;
+
     public static void increaseScore(int point) {
         score += point;
     }
@@ -59,6 +64,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+
         // score board
         score = 0;
         scoreBoard = new TextField();
@@ -219,7 +225,49 @@ public class BombermanGame extends Application {
         entities.add(bomberman);
     }
 
+    // check if portal isn't under the brick
+    public boolean checkPortal() {
+        int xPortal = 0, yPortal = 0;
+        for (Entity entity: stillObjects) {
+            String className = entity.getClass().getTypeName();
+            if (className.contains("Portal")) {
+                xPortal = entity.getX();
+                yPortal = entity.getY();
+            }
+        }
+
+        for (Entity entity: entities) {
+            String className = entity.getClass().getTypeName();
+            if (entity.existOnSquare(xPortal, yPortal) && className.contains("Brick") && entity.isVisible()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkCondition() {
+        for (Entity entity: entities) {
+            String className = entity.getClass().getTypeName();
+            if (className.contains("Enemy") && entity.isVisible()) {
+                return false;
+            }
+        }
+        if (checkPortal() && isBomberOnThePortal) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void update() {
+        //change level if condition = true
+        if (checkCondition()) {
+            nextLevel = ++currentLevel;
+            createMap(nextLevel);
+            currentLevel++;
+        }
+
         // update scoreBoard
         scoreBoard.setText("Score: " + score);
 

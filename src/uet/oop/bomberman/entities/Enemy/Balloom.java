@@ -56,7 +56,7 @@ public class Balloom extends Enemy {
             dyingAnimatedTime -= BombermanGame.TIME_UNIT;
         } else {
             BombermanGame.increaseScore(point);
-            setVisible(false);
+            this.setVisible(false);
         }
     }
 }

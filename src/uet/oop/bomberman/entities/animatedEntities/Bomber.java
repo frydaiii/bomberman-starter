@@ -76,6 +76,13 @@ public class Bomber extends AnimatedEntity {
         }
         for (Entity entity: BombermanGame.stillObjects) {
             String className = entity.getClass().getTypeName();
+            if (entity.existOnSquare(x, y) && entity.isVisible()) {
+                if (className.contains("Portal")) {
+                    BombermanGame.isBomberOnThePortal = true;
+                } else {
+                    BombermanGame.isBomberOnThePortal = false;
+                }
+            }
             if (className.contains("Grass")) {
                 continue;
             } else {
@@ -102,6 +109,7 @@ public class Bomber extends AnimatedEntity {
         for (Entity entity: BombermanGame.entities) {
             if (entity.existOnSquare(x, y) && entity.isVisible()) {
                 String className = entity.getClass().getTypeName();
+
                 if (className.contains("Brick")) {
                     return;
                 }

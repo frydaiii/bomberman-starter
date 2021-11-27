@@ -29,7 +29,7 @@ public abstract class Enemy extends AnimatedEntity {
     private int lastY = 0;
 
     // Kiểm tra dead or alive
-    protected boolean alive = true;
+    protected boolean alive = false;
     protected long dyingAnimatedTime = 1_000_000_000l;
     protected boolean hasBomb = false;
 
