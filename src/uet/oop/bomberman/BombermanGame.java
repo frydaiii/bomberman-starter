@@ -2,12 +2,12 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
@@ -26,10 +26,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
-
-/** TO DO:
- * detach entities to "bomberman", "enemies" and "others". */
 
 public class BombermanGame extends Application {
     
@@ -40,21 +38,24 @@ public class BombermanGame extends Application {
     public static final int HEIGHT = 13;
     public static int width = 30;
 
+    private Group root = new Group(); // root container
+
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> updateQueue = new ArrayList<>();
+    public static int lives = 3;
     private Bomber bomberman;
     private static int score;
-    private GraphicsContext gc;
     private Canvas canvas;
+    private GraphicsContext gc;
     private TextField scoreBoard;
-
-    public static void increaseScore(int point) {
-        score += point;
-    }
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
+    }
+
+    public static void increaseScore(int point) {
+        score += point;
     }
 
     @Override
@@ -67,25 +68,21 @@ public class BombermanGame extends Application {
         scoreBoard.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
         scoreBoard.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
         scoreBoard.setFont(Font.font(18));
-        scoreBoard.setStyle("-fx-background-color: #a9a8a8; -fx-text-fill: black;");
+        scoreBoard.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;");
 
         // button
-        Button pauseButton = new Button("Pause");
+        Button pauseButton = new Button("Next level");
         pauseButton.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
         pauseButton.setPrefWidth(70);
         pauseButton.setLayoutX(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
-//        pauseButton.setStyle("-fx-background-color: #a9a8a8;");
         pauseButton.setFocusTraversable(false);
         pauseButton.setOnAction(actionEvent -> {
-            System.out.println("helo");
+            System.out.println("Next level");
+            createMap(2);
         });
 
-//        createCharacters();
         createMap(1);
 
-        // Tao root container
-        Group root = new Group();
-        root.getChildren().add(canvas); // created in createMap()
         root.getChildren().add(scoreBoard);
         root.getChildren().add(pauseButton);
 
@@ -111,6 +108,13 @@ public class BombermanGame extends Application {
                 /** update and render every TIME_UNIT. */
                 if (l - lastUpdate >= TIME_UNIT) {
                     lastUpdate = l;
+
+                    if (lives < 1) {
+                        this.stop();
+                        endingAlert();
+                        return;
+                    }
+
                     update();
                     render();
 
@@ -158,6 +162,8 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
         canvas.setLayoutY((WINDOW_HEIGHT - height) * Sprite.SCALED_SIZE);
         gc = canvas.getGraphicsContext2D();
+        entities = new ArrayList<>();
+        stillObjects = new ArrayList<>();
 
         int player_x = 1;
         int player_y = 1;
@@ -179,7 +185,11 @@ public class BombermanGame extends Application {
                 stillObjects.add(object);
             }
         }
-        bomberman = new Bomber(player_x, player_y, Sprite.player_right.getFxImage());
+        if (Objects.isNull(bomberman)) {
+            bomberman = new Bomber(player_x, player_y);
+        }
+        bomberman.setX(player_x);
+        bomberman.setY(player_y);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Entity object = new Balloom(i, j, Sprite.balloom_right2.getFxImage(), MOVING_UNIT * 1.0 / 2);
@@ -217,11 +227,30 @@ public class BombermanGame extends Application {
             }
         }
         entities.add(bomberman);
+        root.getChildren().add(canvas);
+    }
+
+    public void endingAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Your score is " + score + "! Click OK to exit.");
+
+        alert.setOnHidden(evt -> Platform.exit());
+
+        alert.show();
     }
 
     public void update() {
         // update scoreBoard
-        scoreBoard.setText("Score: " + score);
+        scoreBoard.setText("Score: " + score + "      Lives: " + lives);
+
+        // relive bomberman if necessary
+        if (!bomberman.isVisible() && lives > 0) {
+            bomberman = new Bomber(1, 1);
+            updateQueue.add(bomberman);
+            lives--;
+        }
 
         // add waiting entities to this.entities
         updateQueue.forEach(entity -> entities.add(entity));

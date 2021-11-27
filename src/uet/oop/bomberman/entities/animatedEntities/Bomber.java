@@ -24,8 +24,8 @@ public class Bomber extends AnimatedEntity {
     private boolean alive;
     private long dyingAnimatedTime = 1_000_000_000l;
 
-    public Bomber(int x, int y, Image img) {
-        super( x, y, img);
+    public Bomber(int x, int y) {
+        super( x, y, Sprite.player_right.getFxImage());
         direction = CENTER;
         maxBombs = 1;
         maxExplodeRange = 2;
@@ -177,8 +177,6 @@ public class Bomber extends AnimatedEntity {
 
     @Override
     public void update() {
-//        updateBuff();
-
         if (alive) {
             animate();
         } else {

@@ -33,6 +33,15 @@ public abstract class Entity {
         return y;
     }
 
+    // chuyển từ tọa độ đơn vị sang tọa độ trong canvas
+    public void setX(int x) {
+        this.x = x * Sprite.SCALED_SIZE;
+    }
+
+    public void setY(int y) {
+        this.y = y * Sprite.SCALED_SIZE;
+    }
+
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
         this.xUnit = xUnit;
