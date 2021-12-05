@@ -205,15 +205,19 @@ public class Bomber extends AnimatedEntity {
         switch (direction) {
             case UP:
                 moveUp();
+                //Sound.walkVertically();
                 break;
             case DOWN:
                 moveDown();
+                //Sound.walkVertically();
                 break;
             case LEFT:
                 moveLeft();
+                //Sound.walkHorizontally();
                 break;
             case RIGHT:
                 moveRight();
+                //Sound.walkHorizontally();
                 break;
             case CENTER:
                 break;

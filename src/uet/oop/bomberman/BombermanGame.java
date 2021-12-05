@@ -55,8 +55,9 @@ public class BombermanGame extends Application {
 
     public static boolean condition = false;
     public static int currentLevel = 1;
-    public static int nextLevel;
+    public static int nextLevel = 2;
     public static boolean isBomberOnThePortal = false;
+    public static boolean isInGame = false;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -69,7 +70,7 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) {
         //Sound.levelStart();
-        //Sound.inGame();
+        Sound.inGame();
         // score board
         score = 0;
         scoreBoard = new TextField();
@@ -88,14 +89,13 @@ public class BombermanGame extends Application {
         pauseButton.setFocusTraversable(false);
         pauseButton.setOnAction(actionEvent -> {
             System.out.println("Next level");
-            waitingScreen(3);
+            waitingScreen(nextLevel);
         });
-
-        createMap(1);
 
         root.getChildren().add(scoreBoard);
         root.getChildren().add(pauseButton);
 
+        createMap(1);
         // Tao scene
         Scene scene = new Scene(root,
                 Sprite.SCALED_SIZE * WINDOW_WIDTH,
@@ -130,7 +130,7 @@ public class BombermanGame extends Application {
                     render();
 
                     if (bomberman.getX() >= (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 &&
-                    bomberman.getX() <= (width - WINDOW_WIDTH / 2) * Sprite.SCALED_SIZE) {
+                            bomberman.getX() <= (width - WINDOW_WIDTH / 2) * Sprite.SCALED_SIZE) {
                         double distance = (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX();
                         root.setLayoutX(distance);
                         scoreBoard.setLayoutX(-distance);
@@ -256,6 +256,7 @@ public class BombermanGame extends Application {
 
         alert.show();
     }
+
     public void waitingScreen(int level) {
         root.getChildren().remove(canvas);
         TextField notif = new TextField("Level " + level);
@@ -275,9 +276,11 @@ public class BombermanGame extends Application {
         next.setLayoutX(253);
         next.setOnAction(actionEvent1 -> {
             createMap(level);
+            Sound.levelStart();
         });
         root.getChildren().add(next);
     }
+
 
     // check if portal isn't under the brick
     public boolean checkPortal() {

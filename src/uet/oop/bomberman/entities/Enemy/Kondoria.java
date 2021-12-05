@@ -9,7 +9,7 @@ public class Kondoria extends Enemy {
     public Kondoria(int x, int y, Image img, double speed, Bomber bomber) {
         super(x, y, img, speed, 500);
         super.fp = new findPathAdvanced(bomber, this);
-        this.throughtWall = false;
+        this.throughtWall = true;
     }
 
     @Override
