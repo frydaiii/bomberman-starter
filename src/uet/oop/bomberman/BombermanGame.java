@@ -184,6 +184,7 @@ public class BombermanGame extends Application {
                 } else if(type_entity.equals("x")) {
                     //portal
                     object = new Portal(i, j);
+                    stillObjects.add(new Grass(i, j));
                 }
                 stillObjects.add(object);
             }
@@ -210,14 +211,17 @@ public class BombermanGame extends Application {
                 }
                 else if (type_entity.equals("b")) {
                     object = new Bomb(i, j);
+                    entities.add(new Brick(i,j));
                 }
                 else if (type_entity.equals("f")) {
                     //flame item
                     object = new Flame(i, j);
+                    entities.add(new Brick(i,j));
                 }
                 else if (type_entity.equals("s")) {
                     //speed item
                     object = new Speed(i, j);
+                    entities.add(new Brick(i,j));
                 }
                 else if (type_entity.equals("*") || type_entity.equals("x")) {
                     object = new Brick(i, j);
@@ -225,8 +229,9 @@ public class BombermanGame extends Application {
                 else if (! type_entity.equals("1")) {
                     check = false;
                 }
-                if(check)
+                if(check) {
                     entities.add(object);
+                }
             }
         }
         entities.add(bomberman);
@@ -293,7 +298,7 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         /** render in order:
          * static entities
-         * flames
+         * flames and items
          * other animate entities*/
         stillObjects.forEach(g -> {
             if (g.isVisible()) {
@@ -301,14 +306,18 @@ public class BombermanGame extends Application {
             }
         });
         entities.forEach(g -> {
+            String className = g.getClass().getTypeName();
             if (g.isVisible()
-                && g.getClass().getTypeName().contains("flames")) {
+                && (className.contains("flames")
+                    || className.contains("buffItems"))) {
                 g.render(gc);
             }
         });
         entities.forEach(g -> {
+            String className = g.getClass().getTypeName();
             if (g.isVisible()
-                && !g.getClass().getTypeName().contains("flames")) {
+                && !className.contains("flames")
+                && !className.contains("buffItems")) {
                 g.render(gc);
             }
         });
