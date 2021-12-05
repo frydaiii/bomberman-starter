@@ -3,11 +3,13 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
@@ -78,7 +80,7 @@ public class BombermanGame extends Application {
         pauseButton.setFocusTraversable(false);
         pauseButton.setOnAction(actionEvent -> {
             System.out.println("Next level");
-            createMap(2);
+            waitingScreen(3);
         });
 
         createMap(1);
@@ -90,6 +92,7 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root,
                 Sprite.SCALED_SIZE * WINDOW_WIDTH,
                 Sprite.SCALED_SIZE * WINDOW_HEIGHT);
+        scene.setFill(Color.BLACK);
         scene.setOnKeyPressed(keyEvent -> {
             bomberman.controlPressing(keyEvent.getCode());
         });
@@ -239,6 +242,28 @@ public class BombermanGame extends Application {
         alert.setOnHidden(evt -> Platform.exit());
 
         alert.show();
+    }
+    public void waitingScreen(int level) {
+        root.getChildren().remove(canvas);
+        TextField notif = new TextField("Level " + level);
+        notif.setEditable(false);
+        notif.setFocusTraversable(false);
+        notif.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff");
+        notif.setFont(Font.font(50));
+        notif.setLayoutY((160));
+        notif.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE);
+        notif.setAlignment(Pos.CENTER);
+        root.getChildren().add(notif);
+
+        Button next = new Button("click to continue");
+        next.setStyle("-fx-background-color: #000000");
+        next.setTextFill(Color.WHITE);
+        next.setLayoutY(240);
+        next.setLayoutX(253);
+        next.setOnAction(actionEvent1 -> {
+            createMap(level);
+        });
+        root.getChildren().add(next);
     }
 
     public void update() {
