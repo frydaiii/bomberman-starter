@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.animatedEntities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundEffect.Sound;
 
 public class Bomb extends AnimatedEntity{
     private final long limitedTime = 2_000_000_000l; // 2s
@@ -25,6 +26,7 @@ public class Bomb extends AnimatedEntity{
 
     public void explode() {
         ExplosionController explosion = new ExplosionController(xUnit, yUnit, explodeRange);
+        Sound.explosion();
         explosion.begin();
     }
 

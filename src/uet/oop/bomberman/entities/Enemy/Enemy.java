@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntity;
 import uet.oop.bomberman.entities.animatedEntities.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundEffect.Sound;
 
 public abstract class Enemy extends AnimatedEntity {
     protected int point;
@@ -23,8 +24,9 @@ public abstract class Enemy extends AnimatedEntity {
     protected boolean moving = true;
 
     // Kiểm tra dead or alive
-    protected boolean alive = false;
+    protected boolean alive = true;
     protected long dyingAnimatedTime = 1_000_000_000l;
+    protected boolean throughtWall = false;
 
 
     public Enemy(int x, int y, Image img, double speed, int point) {
@@ -32,7 +34,7 @@ public abstract class Enemy extends AnimatedEntity {
         this.speed = speed;
         this.point = point;
 
-        MAX_STEPS = Sprite.DEFAULT_SIZE / speed;
+        MAX_STEPS = 32;
         rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
         steps = MAX_STEPS;
     }
@@ -82,12 +84,26 @@ public abstract class Enemy extends AnimatedEntity {
     }
 
     public boolean canMove(int x, int y) {
-        for (Entity entity: BombermanGame.stillObjects) {
-            String className = entity.getClass().getTypeName();
-            if (entity.existOnSquare(x, y) && !className.contains("Grass")) {
-                return false;
+        if (throughtWall) {
+            for (Entity entity : BombermanGame.entities) {
+                if (entity.existOnSquare(x, y) && entity.isVisible()) {
+                    String className = entity.getClass().getTypeName();
+                    if (className.contains("flames")) {
+                        setAlive(false);
+                    }
+                    if (className.contains("Bomb")) {
+                        return false;
+                    }
+                }
+
             }
-        }
+        } else {
+            for (Entity entity : BombermanGame.stillObjects) {
+                String className = entity.getClass().getTypeName();
+                if (entity.existOnSquare(x, y) && !className.contains("Grass")) {
+                    return false;
+                }
+            }
 
 //        for (Entity entity: BombermanGame.entities) {
 //            if (this.existOnSquare(entity.getX(), entity.getY()) &&
@@ -97,21 +113,21 @@ public abstract class Enemy extends AnimatedEntity {
 //            }
 //        }
 
-        for (Entity entity: BombermanGame.entities) {
-            if (entity.existOnSquare(x, y) && entity.isVisible()) {
-                String className = entity.getClass().getTypeName();
-                if (className.contains("flames")) {
-                    setAlive(false);
-                }
-                if (className.contains("Bomber")) {
-                    ((Bomber) entity).setAlive(false);
-                }
-                if (className.contains("Bomb") || className.contains("Brick")) {
-                    return false;
+            for (Entity entity : BombermanGame.entities) {
+                if (entity.existOnSquare(x, y) && entity.isVisible()) {
+                    String className = entity.getClass().getTypeName();
+                    if (className.contains("flames")) {
+                        setAlive(false);
+                    }
+                    if (className.contains("Bomber")) {
+                        ((Bomber) entity).setAlive(false);
+                    }
+                    if (className.contains("Bomb") || className.contains("Brick")) {
+                        return false;
+                    }
                 }
             }
         }
-
 
 
         return true;
@@ -133,5 +149,6 @@ public abstract class Enemy extends AnimatedEntity {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+        Sound.death();
     }
 }

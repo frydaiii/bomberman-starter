@@ -21,6 +21,7 @@ import uet.oop.bomberman.entities.staticEntities.Grass;
 import uet.oop.bomberman.entities.staticEntities.Portal;
 import uet.oop.bomberman.entities.staticEntities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundEffect.Sound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,6 +66,8 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        //Sound.levelStart();
+        //Sound.inGame();
         // score board
         score = 0;
         scoreBoard = new TextField();
@@ -83,6 +86,7 @@ public class BombermanGame extends Application {
         pauseButton.setFocusTraversable(false);
         pauseButton.setOnAction(actionEvent -> {
             System.out.println("Next level");
+
             createMap(2);
         });
 
@@ -203,12 +207,12 @@ public class BombermanGame extends Application {
                 if (type_entity.equals("2")) {
                     object = new Oneal(i, j, Sprite.oneal_right1.getFxImage(), MOVING_UNIT / 1.5, bomberman);
                 } else if (type_entity.equals("5")) {
-                    object = new Doll(i, j, Sprite.doll_left1.getFxImage(), MOVING_UNIT / 2);
+                    object = new Doll(i, j, Sprite.doll_left1.getFxImage(), MOVING_UNIT / 2.0);
                 } else if(type_entity.equals("4")) {
                     object = new Minvo(i, j, Sprite.minvo_right2.getFxImage(), MOVING_UNIT / 1.75, bomberman);
                 }
                 else if (type_entity.equals("3")) {
-                    object = new Kondoria(i, j, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT / 4, bomberman);
+                    object = new Kondoria(i, j, Sprite.kondoria_right1.getFxImage(), MOVING_UNIT / 2.0, bomberman);
                 }
                 else if (type_entity.equals("b")) {
                     object = new Bomb(i, j);
@@ -287,6 +291,7 @@ public class BombermanGame extends Application {
             nextLevel = ++currentLevel;
             createMap(nextLevel);
             currentLevel++;
+            Sound.levelComplete();
         }
 
         // update scoreBoard

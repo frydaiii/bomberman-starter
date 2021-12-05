@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundEffect.Sound;
 
 import java.util.ArrayList;
 
@@ -116,14 +117,17 @@ public class Bomber extends AnimatedEntity {
                 if (className.contains("buffItems")) {
                     if (className.contains("Bomb")) {
                         maxBombs++;
+                        Sound.item();
                         entity.setVisible(false);
                     }
                     if (className.contains("Flame")) {
                         maxExplodeRange++;
+                        Sound.item();
                         entity.setVisible(false);
                     }
                     if (className.contains("Speed")) {
                         speed++;
+                        Sound.speedItem();
                         entity.setVisible(false);
                     }
                 }
@@ -178,6 +182,7 @@ public class Bomber extends AnimatedEntity {
         Bomb bomb = new Bomb(xBomb, yBomb, maxExplodeRange);
         BombermanGame.updateQueue.add(bomb);
         plannedBomb.add(bomb);
+        Sound.planBomb();
     }
 
     @Override
