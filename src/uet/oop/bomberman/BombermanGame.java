@@ -33,7 +33,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WINDOW_WIDTH = 20;
     public static final int WINDOW_HEIGHT = 14;
     public static final long TIME_UNIT = 10_000_000; // 10 ms
@@ -53,11 +53,10 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private TextField scoreBoard;
 
-    public static boolean condition = false;
     public static int currentLevel = 1;
-    public static int nextLevel = 2;
+    public static int nextLevel = 0;
     public static boolean isBomberOnThePortal = false;
-    public static boolean isInGame = false;
+    public boolean onWaitingScreen = false;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -69,33 +68,33 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        //Sound.levelStart();
         Sound.inGame();
         // score board
         score = 0;
         scoreBoard = new TextField();
         scoreBoard.setEditable(false);
         scoreBoard.setFocusTraversable(false);
-        scoreBoard.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
+        scoreBoard.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE);
         scoreBoard.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
         scoreBoard.setFont(Font.font(18));
         scoreBoard.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;");
 
         // button
-        Button pauseButton = new Button("Next level");
-        pauseButton.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
-        pauseButton.setPrefWidth(70);
-        pauseButton.setLayoutX(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
-        pauseButton.setFocusTraversable(false);
-        pauseButton.setOnAction(actionEvent -> {
-            System.out.println("Next level");
-            waitingScreen(nextLevel);
-        });
+//        Button pauseButton = new Button("Next level");
+//        pauseButton.setPrefHeight((WINDOW_HEIGHT - HEIGHT) * Sprite.SCALED_SIZE);
+//        pauseButton.setPrefWidth(70);
+//        pauseButton.setLayoutX(WINDOW_WIDTH * Sprite.SCALED_SIZE - 70);
+//        pauseButton.setFocusTraversable(false);
+//        pauseButton.setOnAction(actionEvent -> {
+//            System.out.println("Next level");
+//            nextLevel(3);
+//        });
 
         root.getChildren().add(scoreBoard);
-        root.getChildren().add(pauseButton);
+//        root.getChildren().add(pauseButton);
 
         createMap(1);
+
         // Tao scene
         Scene scene = new Scene(root,
                 Sprite.SCALED_SIZE * WINDOW_WIDTH,
@@ -134,12 +133,12 @@ public class BombermanGame extends Application {
                         double distance = (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX();
                         root.setLayoutX(distance);
                         scoreBoard.setLayoutX(-distance);
-                        pauseButton.setLayoutX(-distance + (WINDOW_WIDTH * Sprite.SCALED_SIZE - 70));
                     }
                 }
             }
         };
         timer.start();
+
 
     }
 
@@ -173,6 +172,7 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
         canvas.setLayoutY((WINDOW_HEIGHT - height) * Sprite.SCALED_SIZE);
         gc = canvas.getGraphicsContext2D();
+
         entities = new ArrayList<>();
         stillObjects = new ArrayList<>();
 
@@ -257,8 +257,10 @@ public class BombermanGame extends Application {
         alert.show();
     }
 
-    public void waitingScreen(int level) {
-        root.getChildren().remove(canvas);
+    public void nextLevel(int level) {
+        if (level != 1) {
+            root.getChildren().remove(canvas);
+        }
         TextField notif = new TextField("Level " + level);
         notif.setEditable(false);
         notif.setFocusTraversable(false);
@@ -273,14 +275,15 @@ public class BombermanGame extends Application {
         next.setStyle("-fx-background-color: #000000");
         next.setTextFill(Color.WHITE);
         next.setLayoutY(240);
-        next.setLayoutX(253);
+        next.setLayoutX(260);
+        next.setFocusTraversable(false);
         next.setOnAction(actionEvent1 -> {
             createMap(level);
             Sound.levelStart();
+            onWaitingScreen = false;
         });
         root.getChildren().add(next);
     }
-
 
     // check if portal isn't under the brick
     public boolean checkPortal() {
@@ -319,21 +322,22 @@ public class BombermanGame extends Application {
 
     public void update() {
         //change level if condition = true
-        if (checkCondition()) {
-            nextLevel = ++currentLevel;
-            createMap(nextLevel);
-            currentLevel++;
+        if (checkCondition() && onWaitingScreen == false) {
+            nextLevel(1);
             Sound.levelComplete();
+            onWaitingScreen = true;
         }
 
         // update scoreBoard
-        scoreBoard.setText("Score: " + score + "      Lives: " + lives);
+        scoreBoard.setText("Score: " + score + "          Lives: " + lives + "            Level: " + currentLevel);
 
         // relive bomberman if necessary
         if (!bomberman.isVisible() && lives > 0) {
             bomberman = new Bomber(1, 1);
             updateQueue.add(bomberman);
             lives--;
+            root.setLayoutX(0);
+            scoreBoard.setLayoutX(-0);
         }
 
         // add waiting entities to this.entities
