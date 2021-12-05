@@ -3,11 +3,13 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
@@ -86,8 +88,7 @@ public class BombermanGame extends Application {
         pauseButton.setFocusTraversable(false);
         pauseButton.setOnAction(actionEvent -> {
             System.out.println("Next level");
-
-            createMap(2);
+            waitingScreen(3);
         });
 
         createMap(1);
@@ -99,6 +100,7 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root,
                 Sprite.SCALED_SIZE * WINDOW_WIDTH,
                 Sprite.SCALED_SIZE * WINDOW_HEIGHT);
+        scene.setFill(Color.BLACK);
         scene.setOnKeyPressed(keyEvent -> {
             bomberman.controlPressing(keyEvent.getCode());
         });
@@ -190,6 +192,7 @@ public class BombermanGame extends Application {
                 } else if(type_entity.equals("x")) {
                     //portal
                     object = new Portal(i, j);
+                    stillObjects.add(new Grass(i, j));
                 }
                 stillObjects.add(object);
             }
@@ -216,14 +219,17 @@ public class BombermanGame extends Application {
                 }
                 else if (type_entity.equals("b")) {
                     object = new Bomb(i, j);
+                    entities.add(new Brick(i,j));
                 }
                 else if (type_entity.equals("f")) {
                     //flame item
                     object = new Flame(i, j);
+                    entities.add(new Brick(i,j));
                 }
                 else if (type_entity.equals("s")) {
                     //speed item
                     object = new Speed(i, j);
+                    entities.add(new Brick(i,j));
                 }
                 else if (type_entity.equals("*") || type_entity.equals("x")) {
                     object = new Brick(i, j);
@@ -231,8 +237,9 @@ public class BombermanGame extends Application {
                 else if (! type_entity.equals("1")) {
                     check = false;
                 }
-                if(check)
+                if(check) {
                     entities.add(object);
+                }
             }
         }
         entities.add(bomberman);
@@ -248,6 +255,28 @@ public class BombermanGame extends Application {
         alert.setOnHidden(evt -> Platform.exit());
 
         alert.show();
+    }
+    public void waitingScreen(int level) {
+        root.getChildren().remove(canvas);
+        TextField notif = new TextField("Level " + level);
+        notif.setEditable(false);
+        notif.setFocusTraversable(false);
+        notif.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff");
+        notif.setFont(Font.font(50));
+        notif.setLayoutY((160));
+        notif.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE);
+        notif.setAlignment(Pos.CENTER);
+        root.getChildren().add(notif);
+
+        Button next = new Button("click to continue");
+        next.setStyle("-fx-background-color: #000000");
+        next.setTextFill(Color.WHITE);
+        next.setLayoutY(240);
+        next.setLayoutX(253);
+        next.setOnAction(actionEvent1 -> {
+            createMap(level);
+        });
+        root.getChildren().add(next);
     }
 
     // check if portal isn't under the brick
@@ -320,7 +349,7 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         /** render in order:
          * static entities
-         * flames
+         * flames and items
          * other animate entities*/
         stillObjects.forEach(g -> {
             if (g.isVisible()) {
@@ -328,14 +357,18 @@ public class BombermanGame extends Application {
             }
         });
         entities.forEach(g -> {
+            String className = g.getClass().getTypeName();
             if (g.isVisible()
-                && g.getClass().getTypeName().contains("flames")) {
+                && (className.contains("flames")
+                    || className.contains("buffItems"))) {
                 g.render(gc);
             }
         });
         entities.forEach(g -> {
+            String className = g.getClass().getTypeName();
             if (g.isVisible()
-                && !g.getClass().getTypeName().contains("flames")) {
+                && !className.contains("flames")
+                && !className.contains("buffItems")) {
                 g.render(gc);
             }
         });
