@@ -54,7 +54,6 @@ public class BombermanGame extends Application {
     private TextField scoreBoard;
 
     public static int currentLevel = 1;
-    public static int nextLevel = 0;
     public static boolean isBomberOnThePortal = false;
     public boolean onWaitingScreen = false;
 
@@ -258,6 +257,8 @@ public class BombermanGame extends Application {
     }
 
     public void nextLevel(int level) {
+        root.setLayoutX(0);
+        scoreBoard.setLayoutX(-0);
         if (level != 1) {
             root.getChildren().remove(canvas);
         }
@@ -323,7 +324,8 @@ public class BombermanGame extends Application {
     public void update() {
         //change level if condition = true
         if (checkCondition() && onWaitingScreen == false) {
-            nextLevel(1);
+            currentLevel++;
+            nextLevel(currentLevel);
             Sound.levelComplete();
             onWaitingScreen = true;
         }

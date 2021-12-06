@@ -24,7 +24,7 @@ public abstract class Enemy extends AnimatedEntity {
     protected boolean moving = true;
 
     // Kiểm tra dead or alive
-    protected boolean alive = false;
+    protected boolean alive = true;
     protected long dyingAnimatedTime = 1_000_000_000l;
     protected boolean throughtWall = false;
 
