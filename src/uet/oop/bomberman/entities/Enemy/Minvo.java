@@ -46,10 +46,12 @@ public class Minvo extends Enemy {
                     500_000_000).getFxImage();
             dyingAnimatedTime -= BombermanGame.TIME_UNIT;
         } else {
+            int xNew = (int) Math.round((1.0 * this.x / Sprite.SCALED_SIZE));
+            int yNew = (int) Math.round((1.0 * this.y / Sprite.SCALED_SIZE));
             BombermanGame.increaseScore(point);
             setVisible(false);
-//            BombermanGame.entities.add(new Doll(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE, Sprite.doll_right1.getFxImage(), this.speed / 2));
-//            BombermanGame.entities.remove(this);
+            BombermanGame.updateQueue.add(new Doll(xNew, yNew, Sprite.doll_right1.getFxImage(), this.speed));
+            BombermanGame.updateQueue.remove(this);
         }
     }
 }

@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundEffect.Sound;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,11 @@ public class Bomber extends AnimatedEntity {
         }
         for (Entity entity: BombermanGame.stillObjects) {
             String className = entity.getClass().getTypeName();
+            if (className.contains("Portal")) {
+                BombermanGame.isBomberOnThePortal = true;
+            } else {
+                BombermanGame.isBomberOnThePortal = false;
+            }
             if (className.contains("Grass")) {
                 continue;
             } else {
@@ -111,14 +117,17 @@ public class Bomber extends AnimatedEntity {
                 if (className.contains("buffItems")) {
                     if (className.contains("Bomb")) {
                         maxBombs++;
+                        Sound.item();
                         entity.setVisible(false);
                     }
                     if (className.contains("Flame")) {
                         maxExplodeRange++;
+                        Sound.item();
                         entity.setVisible(false);
                     }
                     if (className.contains("Speed")) {
                         speed++;
+                        Sound.speedItem();
                         entity.setVisible(false);
                     }
                 }
@@ -173,6 +182,7 @@ public class Bomber extends AnimatedEntity {
         Bomb bomb = new Bomb(xBomb, yBomb, maxExplodeRange);
         BombermanGame.updateQueue.add(bomb);
         plannedBomb.add(bomb);
+        Sound.planBomb();
     }
 
     @Override
@@ -195,15 +205,19 @@ public class Bomber extends AnimatedEntity {
         switch (direction) {
             case UP:
                 moveUp();
+                //Sound.walkVertically();
                 break;
             case DOWN:
                 moveDown();
+                //Sound.walkVertically();
                 break;
             case LEFT:
                 moveLeft();
+                //Sound.walkHorizontally();
                 break;
             case RIGHT:
                 moveRight();
+                //Sound.walkHorizontally();
                 break;
             case CENTER:
                 break;

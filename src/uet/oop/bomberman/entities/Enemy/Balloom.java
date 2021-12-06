@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.staticEntities.Wall;
 import uet.oop.bomberman.entities.Enemy.findPath;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundEffect.Sound;
 
 import java.util.Random;
 

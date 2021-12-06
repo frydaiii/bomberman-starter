@@ -10,6 +10,7 @@ public class Oneal extends Enemy {
     public Oneal(int x, int y, Image img, double speed, Bomber bomber) {
         super(x, y, img, speed, 200);
         super.fp = new findPathAdvanced(bomber, this);
+        this.throughtWall = false;
     }
 
     @Override

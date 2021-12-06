@@ -10,6 +10,7 @@ public class Doll extends Enemy {
         super(x, y, img, speed, 250);
         super.fp = new findPathBasic();
         this.MAX_STEPS = Sprite.DEFAULT_SIZE * 2;
+        this.throughtWall = false;
     }
 
     @Override
