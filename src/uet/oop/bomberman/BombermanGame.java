@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -52,6 +53,8 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private TextField scoreBoard;
+    private TextField notif;
+    private Button next;
 
     public static int currentLevel = 1;
     public static boolean isBomberOnThePortal = false;
@@ -123,6 +126,13 @@ public class BombermanGame extends Application {
                         endingAlert();
                         return;
                     }
+                    if (checkCondition() && onWaitingScreen == false) {
+                        if (currentLevel == 5) {
+                            this.stop();
+                            endingAlert();
+                            return;
+                        }
+                    }
 
                     update();
                     render();
@@ -142,6 +152,8 @@ public class BombermanGame extends Application {
     }
 
     public void createMap(int level) {
+        root.setLayoutX(0);
+        scoreBoard.setLayoutX(0);
         Integer convert_level = level;
         String filename = "res//levels//Level" + convert_level.toString() + ".txt";
         int read_level;
@@ -257,33 +269,39 @@ public class BombermanGame extends Application {
     }
 
     public void nextLevel(int level) {
-        root.setLayoutX(0);
-        scoreBoard.setLayoutX(-0);
+        double layoutX = (WINDOW_WIDTH * Sprite.SCALED_SIZE) / 2 - bomberman.getX();
         if (level != 1) {
             root.getChildren().remove(canvas);
         }
-        TextField notif = new TextField("Level " + level);
+
+        if (Objects.isNull(notif)) {
+            notif = new TextField();
+            root.getChildren().add(notif);
+        }
+        notif.setText("Level " + level);
         notif.setEditable(false);
         notif.setFocusTraversable(false);
         notif.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff");
         notif.setFont(Font.font(50));
         notif.setLayoutY((160));
+        notif.setLayoutX(-layoutX);
         notif.setPrefWidth(WINDOW_WIDTH * Sprite.SCALED_SIZE);
         notif.setAlignment(Pos.CENTER);
-        root.getChildren().add(notif);
 
-        Button next = new Button("click to continue");
+        if (Objects.isNull(next)) {
+            next = new Button("click to continue");
+            root.getChildren().add(next);
+        }
         next.setStyle("-fx-background-color: #000000");
         next.setTextFill(Color.WHITE);
         next.setLayoutY(240);
-        next.setLayoutX(260);
+        next.setLayoutX(-layoutX + 260);
         next.setFocusTraversable(false);
         next.setOnAction(actionEvent1 -> {
             createMap(level);
             Sound.levelStart();
             onWaitingScreen = false;
         });
-        root.getChildren().add(next);
     }
 
     // check if portal isn't under the brick

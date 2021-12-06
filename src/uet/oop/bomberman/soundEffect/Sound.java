@@ -10,7 +10,7 @@ public class Sound {
 
     //file test
     public static void music() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\test.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//test.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -19,7 +19,7 @@ public class Sound {
 
     //file bonusStage
     public static void bonusStage() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\bonusStage.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//bonusStage.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -28,7 +28,7 @@ public class Sound {
 
     //file death
     public static void death() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\death.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//death.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -37,7 +37,7 @@ public class Sound {
 
     //file ending
     public static void ending() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\ending.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//ending.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -46,7 +46,7 @@ public class Sound {
 
     //file explosion
     public static void explosion() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\explosion.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//explosion.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -55,7 +55,7 @@ public class Sound {
 
     //file findTheExit
     public static void findTheExit() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\findTheExit.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//findTheExit.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -64,7 +64,7 @@ public class Sound {
 
     //file gameOver
     public static void gameOver() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\gameOver.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//gameOver.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -73,7 +73,7 @@ public class Sound {
 
     //file inGame
     public static void inGame() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\inGame.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//inGame.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -82,7 +82,7 @@ public class Sound {
 
     //file invincibility
     public static void invincibility() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\invincibility.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//invincibility.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -91,7 +91,7 @@ public class Sound {
 
     //file item
     public static void item() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\item.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//item.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -100,7 +100,7 @@ public class Sound {
 
     //file levelComplete
     public static void levelComplete() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\levelComplete.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//levelComplete.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -109,7 +109,7 @@ public class Sound {
 
     //file levelStart
     public static void levelStart() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\levelStart.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//levelStart.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -118,7 +118,7 @@ public class Sound {
 
     //file planBomb
     public static void planBomb() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\planBomb.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//planBomb.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -127,7 +127,7 @@ public class Sound {
 
     //file speedItem
     public static void speedItem() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\speedItem.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//speedItem.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -136,7 +136,7 @@ public class Sound {
 
     //file titleScreen
     public static void titleScreen() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\titleScreen.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//titleScreen.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -145,7 +145,7 @@ public class Sound {
 
     //file walkHorizontally
     public static void walkHorizontally() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\walkHorizontally.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//walkHorizontally.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
@@ -154,7 +154,7 @@ public class Sound {
 
     //file walkVertically
     public static void walkVertically() {
-        String s = "src\\uet\\oop\\bomberman\\soundEffect\\fileWav\\walkVertically.wav";
+        String s = "src//uet//oop//bomberman//soundEffect//fileWav//walkVertically.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
